@@ -1,45 +1,54 @@
-# JusticeEase — Frontend
+# 🏛️ JusticeEase — Full-Stack Pakistan Penal Code Discovery Engine
 
-A premium, minimalist frontend for a legal-tech platform. Built with React 18, React Router, Vite, and Tailwind CSS.
+An enterprise-ready, decoupled full-stack platform engineered to parse unstructured legal codices, store relational structures via optimized database indices, and serve data down into an interactive high-density search interface.
 
-## Design tokens
+---
 
-- **Background:** Deep ink navy (`#0B1220` / `ink-900`), near-black at edges
-- **Brand accent:** Antique gold (`#C9A24B` / `gold-400`) — pulled from the reference moodboard
-- **Secondary:** Cool slate (`#8893A6` / `slate-350`) for supporting text
-- **Display type:** Fraunces (serif, used sparingly for headlines)
-- **Body type:** Inter
-- **Utility/data type:** IBM Plex Mono (category tags, IDs, eyebrow labels)
-- **Signature element:** a custom gold ring-and-dot cursor (`CustomCursor.jsx`) that widens over anything clickable — a quiet nod to legal precision
+## 🧭 System Architecture & Dynamic Flow Chart
 
-The provided logo (`src/assets/images/logo.png`) is used in the navbar, footer, and auth screens, set on a soft white badge so it reads cleanly against the dark background.
+The system operates over a modular decoupled layout separating user UI context lifecycles, business logic controller APIs, and data indexing pipelines.
 
-## Getting started
+### Application Architecture Flow
+GitHub will automatically render the following code block into an interactive architectural diagram:
 
-```bash
-npm install
-npm run dev      # http://localhost:5173
-npm run build    # production build to /dist
-```
+```mermaid
+graph TD
+    %% Styling definitions
+    classDef client fill:#F6EFE5,stroke:#1F110A,stroke-width:2px,color:#1F110A;
+    classDef server fill:#001A72,stroke:#001A72,stroke-width:1px,color:#FFFFFF;
+    classDef database fill:#ffffff,stroke:#1F110A,stroke-width:2px,color:#1F110A;
+    classDef pipeline fill:#664B5E,stroke:#664B5E,stroke-width:1px,color:#FFFFFF;
 
-## Connecting your backend
+    %% Presentation Tier (Client)
+    subgraph Frontend [justice-frontend]
+        A[Home.jsx / Search UI]:::client -->|Triggers Async Action| B[services/api.js]:::client
+        M[UI Micro-Grid Matrix]:::client -.->|Re-renders Search Results| A
+    end
 
-1. Set `VITE_API_URL` in `.env` to your Node.js/PHP server.
-2. `src/services/api.js` already has `login`, `register`, `searchLaw`, and `submitContact` functions shaped to match standard REST responses — swap the mock bodies inside `Home.jsx`, `Login.jsx`, `Register.jsx`, and `SearchBar.jsx` for these calls (each spot is marked with a `// Swap for: api...` comment).
-3. `src/data/lawArticles.js` is a mock dataset matching the shape `GET /law/search` should return. Replace the local `.filter()` call in `SearchBar.jsx` with the real API call once it's live.
-4. `AuthContext.jsx` stores the user + token in memory and `localStorage` as a starting point — move to httpOnly cookies once your backend issues real sessions.
+    %% Routing & Logic Tier (Server API)
+    subgraph Backend [justice-backend]
+        B -->|HTTP GET Request /api/laws| C[server.js Entry Point]:::server
+        C -->|Express Router| D[routes/LawRoutes.js]:::server
+        D -->|Invokes Query Sanitization| E[controllers/lawController]:::server
+    end
 
-## Structure
+    %% Infrastructure Data Pipelines (ETL)
+    subgraph Data Pipeline [Data Ingestion Pipeline]
+        X[Pakistan Penal Code.pdf]:::pipeline -->|Node Script Engine| Y(extract.js):::pipeline
+        Y -->|Generates Structured Fixture| Z[lawsData.json]:::pipeline
+        Z -->|Database Seeding Script| W(scripts/seed.mongodb.js):::pipeline
+    end
 
-```
-src/
-├── assets/images/        # logo + hero imagery
-├── assets/styles/        # Tailwind entrypoint + global CSS
-├── components/           # Navbar, CustomCursor, LawCard, SearchBar
-├── context/AuthContext.jsx
-├── data/lawArticles.js   # mock law dataset
-├── pages/                # Home, Login, Register, SearchResults
-├── services/api.js       # central fetch wrapper
-├── App.jsx
-└── main.jsx
-```
+    %% Persistence Tier (Database)
+    subgraph Database [Database Cluster]
+        E -->|Mongoose Schema / Law.js| F[(MongoDB Law Collection)]:::database
+        W -->|Hydrates Production Collections| F
+    end
+
+    %% Response Flow Lifecycle
+    F -->|Returns Indexed Query Array < 50ms| E
+    E -->|Sends JSON Payload Status 200| B
+    B -->|Hydrates Component State| M
+
+    %% Formatting Links
+    linkStyle default stroke:#1F110A,stroke-width:1px;
