@@ -4,45 +4,34 @@ An enterprise-ready, decoupled full-stack platform engineered to parse unstructu
 
 ---
 
-## 🧭 System Architecture & Dynamic Flow Chart
+## 🧭 System Architecture & Operation Lifecycle
 
 The system operates over a modular decoupled layout separating user UI context lifecycles, business logic controller APIs, and data indexing pipelines.
 
-### Application Architecture Flow
-GitHub will automatically render the following code block into an interactive architectural diagram:
-
+### End-to-End Application Data Flow
 ```mermaid
-graph TD
+graph LR
     %% Styling definitions
     classDef client fill:#F6EFE5,stroke:#1F110A,stroke-width:2px,color:#1F110A;
     classDef server fill:#001A72,stroke:#001A72,stroke-width:1px,color:#FFFFFF;
     classDef database fill:#ffffff,stroke:#1F110A,stroke-width:2px,color:#1F110A;
     classDef pipeline fill:#664B5E,stroke:#664B5E,stroke-width:1px,color:#FFFFFF;
 
-    %% Data Ingestion Pipeline (Top Layer)
-    subgraph Pipeline [1. Data Ingestion Pipeline ETL]
-        X[Pakistan Penal Code.pdf]:::pipeline -->|Node Extraction Engine| Y(extract.js):::pipeline
-        Y -->|Generates Local Structured File| Z[lawsData.json]:::pipeline
-        Z -->|Database Seeding Script| W(scripts/seed.mongodb.js):::pipeline
-    end
+    %% Ingestion
+    X[Pakistan Penal Code.pdf]:::pipeline -->|extract.js| Z[lawsData.json]:::pipeline
+    Z -->|seed.mongodb.js| F[(MongoDB Law Collection)]:::database
 
-    %% Database Core Storage
-    subgraph DB [2. Core Database Layer]
-        F[(MongoDB Law Collection)]:::database
-        W -->|Hydrates Production Collections| F
-    end
+    %% Frontend Request
+    A[Home.jsx / Search UI]:::client -->|api.js| C[server.js Entry]:::server
+    C -->|Express Router| D[LawRoutes.js]:::server
+    D -->|Sanitization| E[lawController.js]:::server
 
-    %% Application Core Lifecycle (Bottom Layer)
-    subgraph AppFlow [3. Request & Response Lifecycle]
-        A[Home.jsx / Search UI Component]:::client -->|Triggers Async Event| B[services/api.js]:::client
-        B -->|Asynchronous HTTP GET Request| C[server.js Entry Point]:::server
-        C -->|Express API Router Link| D[routes/LawRoutes.js]:::server
-        D -->|Invokes Input Query Sanitization| E[controllers/lawController]:::server
-        E -->|Queries Mongoose Schema Layout / Law.js| F
-        F -.->|Returns Indexed Array Results < 50ms| E
-        E -.->|Sends Clean JSON Response Payload Status 200| B
-        B -.->|Updates Global State Matrix Engine| M[UI Micro-Grid Matrix Layout]:::client
-    end
+    %% Database Link
+    E -->|Mongoose Query| F
+    F -.->|JSON Response < 50ms| E
+    
+    %% Return Path
+    E -.->|Status 200 OK| A
 
-    %% Links
+    %% Formatting Links
     linkStyle default stroke:#1F110A,stroke-width:1px;
