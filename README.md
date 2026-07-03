@@ -19,36 +19,30 @@ graph TD
     classDef database fill:#ffffff,stroke:#1F110A,stroke-width:2px,color:#1F110A;
     classDef pipeline fill:#664B5E,stroke:#664B5E,stroke-width:1px,color:#FFFFFF;
 
-    %% Presentation Tier (Client)
-    subgraph Frontend [justice-frontend]
-        A[Home.jsx / Search UI]:::client -->|Triggers Async Action| B[services/api.js]:::client
-        M[UI Micro-Grid Matrix]:::client -.->|Re-renders Search Results| A
-    end
-
-    %% Routing & Logic Tier (Server API)
-    subgraph Backend [justice-backend]
-        B -->|HTTP GET Request /api/laws| C[server.js Entry Point]:::server
-        C -->|Express Router| D[routes/LawRoutes.js]:::server
-        D -->|Invokes Query Sanitization| E[controllers/lawController]:::server
-    end
-
-    %% Infrastructure Data Pipelines (ETL)
-    subgraph Data Pipeline [Data Ingestion Pipeline]
-        X[Pakistan Penal Code.pdf]:::pipeline -->|Node Script Engine| Y(extract.js):::pipeline
-        Y -->|Generates Structured Fixture| Z[lawsData.json]:::pipeline
+    %% Data Ingestion Pipeline (Top Layer)
+    subgraph Pipeline [1. Data Ingestion Pipeline ETL]
+        X[Pakistan Penal Code.pdf]:::pipeline -->|Node Extraction Engine| Y(extract.js):::pipeline
+        Y -->|Generates Local Structured File| Z[lawsData.json]:::pipeline
         Z -->|Database Seeding Script| W(scripts/seed.mongodb.js):::pipeline
     end
 
-    %% Persistence Tier (Database)
-    subgraph Database [Database Cluster]
-        E -->|Mongoose Schema / Law.js| F[(MongoDB Law Collection)]:::database
+    %% Database Core Storage
+    subgraph DB [2. Core Database Layer]
+        F[(MongoDB Law Collection)]:::database
         W -->|Hydrates Production Collections| F
     end
 
-    %% Response Flow Lifecycle
-    F -->|Returns Indexed Query Array < 50ms| E
-    E -->|Sends JSON Payload Status 200| B
-    B -->|Hydrates Component State| M
+    %% Application Core Lifecycle (Bottom Layer)
+    subgraph AppFlow [3. Request & Response Lifecycle]
+        A[Home.jsx / Search UI Component]:::client -->|Triggers Async Event| B[services/api.js]:::client
+        B -->|Asynchronous HTTP GET Request| C[server.js Entry Point]:::server
+        C -->|Express API Router Link| D[routes/LawRoutes.js]:::server
+        D -->|Invokes Input Query Sanitization| E[controllers/lawController]:::server
+        E -->|Queries Mongoose Schema Layout / Law.js| F
+        F -.->|Returns Indexed Array Results < 50ms| E
+        E -.->|Sends Clean JSON Response Payload Status 200| B
+        B -.->|Updates Global State Matrix Engine| M[UI Micro-Grid Matrix Layout]:::client
+    end
 
-    %% Formatting Links
+    %% Links
     linkStyle default stroke:#1F110A,stroke-width:1px;
