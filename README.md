@@ -1,1 +1,1 @@
-<img src="images/ui-main.png.png" width="400" alt="Description">
+![Alt text description](assets/ui-main.png.png)
