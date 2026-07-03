@@ -7,7 +7,7 @@ The system operates across three tightly integrated tiers: data ingestion, appli
 ### Architecture Blueprint (flow.png)
 The comprehensive operational pipeline is outlined in the diagram below:
 
-Figure 1: Complete ETL pipeline and HTTP request-response lifecycle mapping backend logic matrices down to database indices.
+![Alt text description](images/flow.png)
 
 ### Process Decomposition
 Data Ingestion Pipeline (ETL): Raw unstructured texts extracted from legal source documents (e.g., Pakistan Penal Code.pdf) are routed through a node-based parser utility (extract.js). The raw data is transformed into a structured JSON database fixture lawsData.json. This manifest is then processed by a database hydration script (seed.mongodb.js) to systematically seed the production database collections.
@@ -20,28 +20,34 @@ Logic Tier: Requests hit the Express entryway server gateway (server.js), which 
 
 Data Tier: The controllers interface with the data layout using Mongoose database abstractions (Law.js), requesting indexed JSON queries directly from the MongoDB engine with lookup latency benchmarks operating under 50ms.
 
-## Repository File Matrix
-Plaintext
 justice-project/
 ├── justice-backend/
-│   ├── config/          # Database connection pools & environment state
-│   ├── controllers/     # Request handlers & legal query sanitization logic (lawController.js)
-│   ├── models/          # Mongoose data structures & strict schemas (Law.js)
-│   ├── routes/          # Express API endpoints & middleware pipelines (LawRoutes.js)
-│   ├── scripts/         # Database hydration utilities (seed.mongodb.js)
-│   ├── server.js        # Main backend engine gateway & port configurations
-│   └── package.json     # Server dependency manifest
+│   ├── config/             # Database connection pools & environment state
+│   │   └── db.js           # MongoDB connection configuration via Mongoose
+│   ├── controllers/        # Request handlers & legal query sanitization logic
+│   │   └── lawController.js# Core search and retrieval controller functions
+│   ├── models/             # Mongoose data structures & strict schemas
+│   │   └── Law.js          # Law statute schema mapping database properties
+│   ├── routes/             # Express API endpoints & middleware pipelines
+│   │   └── LawRoutes.js    # Routes connecting endpoints to controller handlers
+│   ├── scripts/            # Database hydration utilities
+│   │   └── seed.mongodb.js # Seeding script to populate MongoDB from fixtures
+│   ├── server.js           # Main backend engine gateway & port configurations
+│   └── package.json        # Server dependency manifest
 │
 └── justice-frontend/
-    ├── public/          # Global static web server assets
+    ├── public/             # Global static web server assets
     ├── src/
-    │   ├── assets/      # Shared layout components, branding icons, and images
-    │   ├── components/  # Reusable dashboard UI element matrices
-    │   ├── services/    # Axios configurations & async API endpoints (api.js)
-    │   ├── views/       # Primary route view viewports (Home.jsx)
-    │   ├── App.jsx      # Component application shell mapping
-    │   └── main.jsx     # Client UI initialization anchor
-    └── package.json     # Client dependency configuration manifest
+    │   ├── assets/         # Shared layout components, branding icons, and images
+    │   ├── components/     # Reusable dashboard UI element matrices
+    │   ├── services/       # Axios configurations & async API endpoints
+    │   │   └── api.js      # Centralized API network call client setup
+    │   ├── views/          # Primary route view viewports
+    │   │   └── Home.jsx    # Primary search panel and interface view
+    │   ├── App.jsx         # Component application shell mapping
+    │   └── main.jsx        # Client UI initialization anchor
+    └── package.json        # Client dependency configuration manifest
+    
 ## User Interface Viewports
 ![Alt text description](images/ui-main.png.png)
 ### Platform Hero Portal (ui-main.png.jpg)
@@ -87,7 +93,7 @@ Endpoint: POST /api/auth/login
 
 Payload Type: application/json
 
-![Alt text description](images/flow.png)
+
 
 ## Installation & Setup Instructions
 ### Prerequisites
