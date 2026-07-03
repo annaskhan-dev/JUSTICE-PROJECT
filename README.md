@@ -35,3 +35,13 @@ graph LR
 
     %% Formatting Links
     linkStyle default stroke:#1F110A,stroke-width:1px;
+
+<img width="1595" height="1005" alt="api-register png" src="https://github.com/user-attachments/assets/7c16e85b-9e91-46df-9fec-9916facc8b2f" />
+<img width="1607" height="1006" alt="api-login png" src="https://github.com/user-attachments/assets/6aa0196f-8bfd-4c4a-96ca-51ef9cb3b540" />
+<img width="1896" height="902" alt="ui-results png" src="https://github.com/user-attachments/assets/bf3552d0-ef12-494b-a5ea-e361618974d5" />
+<img width="1896" height="912" alt="ui-main png" src="https://github.com/user-attachments/assets/717dad24-3b5e-4b37-8e81-2e5e5fa4f33f" />
+<img width="1472" height="875" alt="db-documents png" src="https://github.com/user-attachments/assets/04a09f6a-339b-414a-b4c9-443597a3782c" />
+<img width="1487" height="896" alt="db-collections png" src="https://github.com/user-attachments/assets/174e71e7-c032-45df-9aa5-2c722004c637" />
+
+
+
