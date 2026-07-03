@@ -4,43 +4,51 @@ An enterprise-ready, decoupled full-stack platform engineered to parse unstructu
 
 ---
 
-## 🧭 System Architecture & Operation Lifecycle
+## 🧭 System Architecture & Dynamic Flow Chart
 
-The platform segregates infrastructure responsibilities into isolated layers: asynchronous automation pipelines, structured persistence schemas, controller routing APIs, and reactive view environments.
+The system operates over a modular decoupled layout separating user UI context lifecycles, business logic controller APIs, and data indexing pipelines.
 
-### End-to-End Application Data Flow
+### Application Architecture Flow
+GitHub will automatically render the following code block into an interactive architectural diagram:
+
 ```mermaid
-graph LR
-    %% Theme Setup
-    classDef client fill:#f4f6f9,stroke:#001A72,stroke-width:2px,color:#1f2937;
-    classDef server fill:#001A72,stroke:#001A72,stroke-width:1px,color:#ffffff;
-    classDef database fill:#ffffff,stroke:#10b981,stroke-width:2px,color:#1f2937;
-    classDef pipeline fill:#6b7280,stroke:#374151,stroke-width:1px,color:#ffffff;
+graph TD
+    %% Styling definitions
+    classDef client fill:#F6EFE5,stroke:#1F110A,stroke-width:2px,color:#1F110A;
+    classDef server fill:#001A72,stroke:#001A72,stroke-width:1px,color:#FFFFFF;
+    classDef database fill:#ffffff,stroke:#1F110A,stroke-width:2px,color:#1F110A;
+    classDef pipeline fill:#664B5E,stroke:#664B5E,stroke-width:1px,color:#FFFFFF;
 
-    %% Ingestion Track
-    subgraph ETL [Data Ingestion Pipeline]
-        A[PPC PDF/Text]:::pipeline -->|extract.js| B[lawsData.json]:::pipeline
-        B -->|seed.mongodb.js| C[(MongoDB Atlas)]:::database
+    %% Presentation Tier (Client)
+    subgraph Frontend [justice-frontend]
+        A[Home.jsx / Search UI]:::client -->|Triggers Async Action| B[services/api.js]:::client
+        M[UI Micro-Grid Matrix]:::client -.->|Re-renders Search Results| A
     end
 
-    %% Client / Server Lifecycle
-    subgraph UI [justice-frontend]
-        D[Search Interface]:::client -->|API Service Call| E[Axios Instance]:::client
+    %% Routing & Logic Tier (Server API)
+    subgraph Backend [justice-backend]
+        B -->|HTTP GET Request /api/laws| C[server.js Entry Point]:::server
+        C -->|Express Router| D[routes/LawRoutes.js]:::server
+        D -->|Invokes Query Sanitization| E[controllers/lawController]:::server
     end
 
-    subgraph API [justice-backend]
-        E -->|HTTP GET /api/laws| F[server.js Entry]:::server
-        F -->|Express Router| G[LawRoutes.js]:::server
-        G -->|Sanitization| H[lawController.js]:::server
+    %% Infrastructure Data Pipelines (ETL)
+    subgraph Data Pipeline [Data Ingestion Pipeline]
+        X[Pakistan Penal Code.pdf]:::pipeline -->|Node Script Engine| Y(extract.js):::pipeline
+        Y -->|Generates Structured Fixture| Z[lawsData.json]:::pipeline
+        Z -->|Database Seeding Script| W(scripts/seed.mongodb.js):::pipeline
     end
 
-    %% Storage Hook
-    H -->|Mongoose Schema Queries| C
-    C -->|JSON Payload Response| H
-    H -->|Status 200 OK| E
-    E -->|State Update Re-Render| D
+    %% Persistence Tier (Database)
+    subgraph Database [Database Cluster]
+        E -->|Mongoose Schema / Law.js| F[(MongoDB Law Collection)]:::database
+        W -->|Hydrates Production Collections| F
+    end
 
-    %% Link Cleanups
-    style ETL fill:none,stroke:#d1d5db,stroke-width:1px,stroke-dasharray: 5 5
-    style UI fill:none,stroke:#d1d5db,stroke-width:1px,stroke-dasharray: 5 5
-    style API fill:none,stroke:#d1d5db,stroke-width:1px,stroke-dasharray: 5 5
+    %% Response Flow Lifecycle
+    F -->|Returns Indexed Query Array < 50ms| E
+    E -->|Sends JSON Payload Status 200| B
+    B -->|Hydrates Component State| M
+
+    %% Formatting Links
+    linkStyle default stroke:#1F110A,stroke-width:1px;
