@@ -1,3 +1,38 @@
+## 📸 Client Application Interface Showcase
+The UI client implements custom micro-scaled responsive data tiles designed with strict typography tracking metrics to guarantee compact corporate readability.
+
+<table width="100%">
+  <tr>
+    <td width="50%"><b align="center">1. Main Search Portal</b><br><img src="justice-frontend/src/assets/images/ui-main.png" alt="Search Portal" width="100%"/></td>
+    <td width="50%"><b align="center">2. Discovery Results Matrix</b><br><img src="justice-frontend/src/assets/images/ui-results.png" alt="Results Grid" width="100%"/></td>
+  </tr>
+</table>
+
+---
+
+## 🗄️ ETL Data Ingestion Pipeline & Database Infrastructure
+A standout feature of this system is its capability to handle raw unstructured legal data sets and map them directly into searchable query arrays.
+
+### Production Storage Layout (MongoDB Compass)
+<table width="100%">
+  <tr>
+    <td width="50%"><b align="center">1. Database Collections</b><br><img src="justice-frontend/src/assets/images/db-collections.png" alt="Database Collections" width="100%"/></td>
+    <td width="50%"><b align="center">2. Parsed Law Documents</b><br><img src="justice-frontend/src/assets/images/db-documents.png" alt="Hydrated Law Documents" width="100%"/></td>
+  </tr>
+</table>
+
+---
+
+## 🔐 Identity Access Management & Route Diagnostics
+The backend incorporates dedicated authorization routers to manage platform access controls securely using tokenized hashing schemas.
+
+### Authentication Diagnostics (Postman Workspace)
+<table width="100%">
+  <tr>
+    <td width="50%"><b align="center">1. User Registration (POST /register)</b><br><img src="justice-frontend/src/assets/images/api-register.png" alt="User Registration Endpoint" width="100%"/></td>
+    <td width="50%"><b align="center">2. Identity Verification (POST /login)</b><br><img src="justice-frontend/src/assets/images/api-login.png" alt="User Login Endpoint" width="100%"/></td>
+  </tr>
+</table>
 # 🏛️ JusticeEase — Full-Stack Pakistan Penal Code Discovery Engine
 
 An enterprise-ready, decoupled full-stack platform engineered to parse unstructured legal codices, store relational structures via optimized database indices, and serve data down into an interactive high-density search interface.
@@ -35,3 +70,4 @@ graph LR
 
     %% Formatting Links
     linkStyle default stroke:#1F110A,stroke-width:1px;
+
