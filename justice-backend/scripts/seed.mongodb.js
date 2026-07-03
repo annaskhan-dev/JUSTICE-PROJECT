@@ -1,8 +1,7 @@
 
+db.getCollection('laws').deleteMany({});
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/justice_db');
-
+// 3. Paste your data array below
 const lawsData = [
   {
     "chapter": "CHAPTER I",
