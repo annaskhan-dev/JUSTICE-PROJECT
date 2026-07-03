@@ -1,11 +1,8 @@
-/* global use, db */
-// 1. Tell the playground to look at your database channel
-use('justice_db');
 
-// 2. Clear out any old empty collection templates
-db.getCollection('laws').deleteMany({});
 
-// 3. Paste your data array below
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/justice_db');
+
 const lawsData = [
   {
     "chapter": "CHAPTER I",
