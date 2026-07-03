@@ -1,1 +1,1 @@
-![Alt text description](assets/ui-main.png.png)
+![Alt text description](images/ui-main.png.png)
